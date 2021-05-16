@@ -33,7 +33,7 @@ python mongofs-drive/main.py
 
 
 ## License
-[LICENSE](LICENSE)
+[LICENSE](LICENSE).
 
 
 ## TODOs
