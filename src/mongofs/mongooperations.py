@@ -1,8 +1,8 @@
 import collections
+import configparser
 import datetime
 import errno
 import logging
-
 import fuse
 import io
 import math
@@ -17,6 +17,7 @@ READDIR_RESULT_ITEM = collections.namedtuple('READDIR_RESULT_ITEM', ['filename',
 
 
 class MongoOperations(fuse.Operations):
+    CONFIG_SECTION = 'mongofs'
     DEFAULT_COLLECTION_NAME = "mongofs-drive"
 
     NOT_IMPLEMENT_EXIT_CODE = 0
@@ -25,6 +26,7 @@ class MongoOperations(fuse.Operations):
 
     __logger = None
 
+    # TODO: init logger outside this class, allowing other level than debug
     @classmethod
     def __init_logger(cls):
         if cls.__logger is None:
@@ -40,14 +42,14 @@ class MongoOperations(fuse.Operations):
         cls.__init_logger()
         return super(MongoOperations, cls).__new__(cls)
 
-    def __init__(self, username: str, password: str, host: str, database: str,
-                 collection: str = DEFAULT_COLLECTION_NAME) -> None:
-        self.username = username
-        self.password = password
-        self.host = host
-        self.database = database
-        self.collection_name = collection
-        self.connection_string = f"mongodb+srv://{username}:{password}@{host}/{database}?retryWrites=true&w=majority"
+    def __init__(self, config: configparser.ConfigParser) -> None:
+        self.username = config.get(section=self.CONFIG_SECTION, option='username')
+        self.password = config.get(section=self.CONFIG_SECTION, option='password')
+        self.host = config.get(section=self.CONFIG_SECTION, option='host')
+        self.database = config.get(section=self.CONFIG_SECTION, option='database')
+        self.collection_name = config.get(section=self.CONFIG_SECTION, option='collection')
+        self.connection_string = \
+            f"mongodb+srv://{self.username}:{self.password}@{self.host}/{self.database}?retryWrites=true&w=majority"
         self.client = pymongo.MongoClient(self.connection_string)
         self.db = self.client[self.database]
         self.col = self.db[self.collection_name]

@@ -13,23 +13,34 @@ CC BY-NC-SA 4.0 license.
 
 ## Use
 
-### Environment variables
-Make sure you have this environment variables or create your own main python file that
-reads from a config file.
+### Configuration file
+Make sure you have a file /home/USER/.geryonfs.ini with the following structure:
 
-```bash
-DB_PASSWORD=<your pass>;
-DB_NAME=<your db>;
-DB_COLLECTION=<your collection>;
-DB_HOST=<your db host>;
-DB_USERNAME=<your username>
 ```
+[mongofs]
+username =
+password =
+database =
+collection =
+host =
+```
+
+You can also set the file in other path as long as you pass the path in the config variable to the mount python binary.
 
 ### Command to mount the Mongo file system
 
 ```bash
-python mongofs-drive/main.py
+python geryon-fs/bin/mount.py --mountpoint /home/USER/tmp/mongofs --config /home/USER/.geryonfs.ini
 ```
+
+If your config file is in **/home/USER/.geryonfs.ini** you can omit the config parameter:
+
+```bash
+python geryon-fs/bin/mount.py --mountpoint /home/USER/tmp/mongofs
+```
+
+## Tests
+
 
 
 ## License
@@ -38,7 +49,8 @@ python mongofs-drive/main.py
 
 ## TODOs
 
-- [ ] Create config format and allow credentials from there.
+- [x] Create config format and allow credentials from there.
+- [ ] Include some cypher.
 - [ ] Make docker image with tests.
 - [ ] IC in some server that offers free minutes.
 - [ ] Measure performance. 

@@ -1,20 +1,17 @@
+import configparser
 import os
 import unittest
-
 import fuse
-
 from mongofs.mongooperations import MongoOperations
 
 
 class TestMongoOperations(unittest.TestCase):
     def setUp(self):
-        username = os.environ["DB_USERNAME"]
-        password = os.environ["DB_PASSWORD"]
-        database = os.environ["DB_NAME"]
-        collection = os.environ["DB_COLLECTION"]
-        host = os.environ["DB_HOST"]
-        self.mongo_operations = MongoOperations(username=username, password=password, database=database, host=host,
-                                                collection=collection)
+        current_username = os.getlogin()
+        config_path = os.environ.get('config_path', f'/home/{current_username}/.geryonfs.ini')
+        config = configparser.ConfigParser()
+        config.read(config_path)
+        self.mongo_operations = MongoOperations(config)
         self.mongo_operations.wipe()
 
     def test_read(self):
