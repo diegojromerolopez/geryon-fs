@@ -248,6 +248,7 @@ class MongoOperations(fuse.Operations):
         file_doc = self.col.find_one({"path": path})
         if file_doc is None:
             raise fuse.FuseOSError(errno.EIO)
+        # TODO: decrypt content
         file_io = io.BytesIO(file_doc["content"])
         file_io.seek(offset)
         return file_io.read(length)
@@ -258,12 +259,15 @@ class MongoOperations(fuse.Operations):
         file_doc = self.col.find_one({"path": path})
         if file_doc is None:
             raise fuse.FuseOSError(errno.EIO)
+        # TODO: decrypt content
         file_io = io.BytesIO(file_doc["content"])
         file_io.seek(offset)
         file_io.write(buf)
         file_io.seek(0)
+        # TODO: encrypt content
+        updated_content = file_io.read()
         res = self.col.update_one(filter={"path": path},
-                                  update={"$set": {"content": file_io.read(), "size": len(buf),
+                                  update={"$set": {"content": updated_content, "size": len(buf),
                                                    "last_updated_at": self.__now()}})
         if res:
             self.__logger.debug(f"write {path} was OK")
