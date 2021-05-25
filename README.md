@@ -1,4 +1,4 @@
-# Geryon-fs
+# Geryon-fuse
 
 **WARNING: this project is a prototype, don't use it for actual and important files.
 I DECLINE ALL RESPONSIBILITY OF LOST DATA OR OTHER CATASTROPHE YOU SUFFER WHEN USING THIS CODE**
