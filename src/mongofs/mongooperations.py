@@ -2,7 +2,6 @@ import collections
 import configparser
 import datetime
 import errno
-import logging
 import fuse
 import io
 import math
@@ -11,7 +10,7 @@ import re
 import stat
 import time
 from typing import Dict, Any
-
+from logger.geryon_logger import build_logger
 
 READDIR_RESULT_ITEM = collections.namedtuple("READDIR_RESULT_ITEM", ["filename", "attrs", "offset"])
 
@@ -24,22 +23,9 @@ class MongoOperations(fuse.Operations):
     SUCCESS_EXIT_CODE = 0
     ERROR_EXIT_CODE = 1
 
-    __logger = None
-
-    # TODO: init logger outside this class, allowing other level than debug
-    @classmethod
-    def __init_logger(cls):
-        if cls.__logger is None:
-            cls.__logger = logging.getLogger(__name__)
-            cls.__logger.setLevel(level=logging.DEBUG)
-            logger_console_handler = logging.StreamHandler()
-            logger_console_handler.setLevel(logging.DEBUG)
-            logger_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-            logger_console_handler.setFormatter(logger_formatter)
-            cls.__logger.addHandler(logger_console_handler)
-
-    def __new__(cls, *args, **kwargs):
-        cls.__init_logger()
+    def __new__(cls, config: configparser.ConfigParser):
+        cls.__config = config
+        cls.__logger = build_logger(config=cls.__config)
         return super(MongoOperations, cls).__new__(cls)
 
     def __init__(self, config: configparser.ConfigParser) -> None:

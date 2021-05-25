@@ -28,8 +28,8 @@ setup(
     license="BSD 2-clause",
     keywords="database mongo fuse driver",
     url="https://github.com/diegojromerolopez/geryon-fuse",
-    packages=["mongofs"],
-    package_dir={"mongofs": "src/mongofs"},
+    packages=["mongofs", "logger"],
+    package_dir={"mongofs": "src/mongofs", "logger": "src/logger"},
     data_files=[("resources", ["resources/.geryonfuse.ini"])],
     include_package_data=True,
     scripts=[

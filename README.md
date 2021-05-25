@@ -17,6 +17,12 @@ CC BY-NC-SA 4.0 license.
 Make sure you have a file /home/USER/.geryonfs.ini with the following structure:
 
 ```
+[logger]
+name = geryon-fuse
+level = debug
+format = %(asctime)s - %(name)s - %(levelname)s - %(message)s
+
+
 [mongofs]
 username =
 password =
@@ -24,6 +30,8 @@ database =
 collection =
 host =
 ```
+
+The logger section is not mandatory.
 
 You can also set the file in other path as long as you pass the path in the config variable to the mount python binary.
 
