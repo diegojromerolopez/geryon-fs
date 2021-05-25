@@ -245,7 +245,11 @@ class MongoOperations(fuse.Operations):
         file_doc = self.col.find_one({"path": path})
         if file_doc is None:
             raise fuse.FuseOSError(errno.EIO)
-        content = self.decrypt(file_doc["content"])
+        raw_content = file_doc["content"]
+        if len(raw_content) > 0:
+            content = self.decrypt(raw_content)
+        else:
+            content = raw_content
         file_io = io.BytesIO(content)
         file_io.seek(offset)
         return file_io.read(length)
