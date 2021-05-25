@@ -8,7 +8,7 @@ from mongofs.mongooperations import MongoOperations
 class TestMongoOperations(unittest.TestCase):
     def setUp(self):
         current_username = os.getlogin()
-        config_path = os.environ.get('config_path', f'/home/{current_username}/.geryonfuse.ini')
+        config_path = os.environ.get("config_path", f"/home/{current_username}/.geryonfuse.ini")
         config = configparser.ConfigParser()
         config.read(config_path)
         self.mongo_operations = MongoOperations(config)
