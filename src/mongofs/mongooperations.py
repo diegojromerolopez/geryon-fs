@@ -78,8 +78,7 @@ class MongoOperations(fuse.Operations):
     def __create_dir(self, path: str) -> Dict[str, Any]:
         return self.__create_doc(path=path, doc_type="dir")
 
-    @classmethod
-    def __build_stat_from_doc(cls, doc):
+    def __build_stat_from_doc(self, doc):
         (uid, gid, pid) = fuse.fuse_get_context()
 
         block_size = 1_000_000  # 1 MB
@@ -103,15 +102,15 @@ class MongoOperations(fuse.Operations):
             stat_result["st_mode"] = (stat.S_IFDIR | permission)
             stat_result["st_nlink"] = 2  # Number of hard links to a directory, 2 because of historical reasons
         else:
-            cls.__logger.debug(doc)
+            self.__logger.debug(doc)
             stat_result["st_size"] = doc.get("size", 0)  # TODO: can size not exists?
             stat_result["st_mode"] = (stat.S_IFREG | permission)
             stat_result["st_nlink"] = 1
-            cls.__logger.debug(f"doc is ok: {doc}")
+            self.__logger.debug(f"doc is ok: {doc}")
 
         stat_result["st_blocks"] = int(math.ceil(float(stat_result["st_size"]) / block_size))
 
-        cls.__logger.debug(f"stat_result {stat_result}")
+        self.__logger.debug(f"stat_result {stat_result}")
         return stat_result
 
     def chmod(self, path, mode):

@@ -70,7 +70,8 @@ python geryon-fuse/bin/mount_mongofs.py --mountpoint /home/USER/tmp/mongofs
 ## TODOs
 
 - [x] Create config format and allow credentials from there.
-- [ ] Include some cypher.
+- [ ] Include some encryption.
+- [ ] Include some content checksum.
 - [ ] Make docker image with tests.
 - [ ] IC in some server that offers free minutes.
 - [ ] Measure performance. 
