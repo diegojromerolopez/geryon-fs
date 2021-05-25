@@ -9,6 +9,7 @@ import pymongo
 import re
 import stat
 import time
+from cryptography.fernet import Fernet
 from typing import Dict, Any
 from logger.geryon_logger import build_logger
 
@@ -46,6 +47,17 @@ class MongoOperations(fuse.Operations):
         self.col.create_index([("path", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
         self.col.create_index([("path", pymongo.ASCENDING), ("last_updated_at", pymongo.ASCENDING)])
         self.col.create_index([("path", pymongo.ASCENDING), ("last_updated_at", pymongo.DESCENDING)])
+        # Encryption stuff
+        self.encryption_key = str.encode(
+            config.get(section=self.CONFIG_SECTION, option="fernet_key", fallback=None)
+        )
+        self.fernet = None
+        self.encrypt = lambda data: data
+        self.decrypt = lambda data: data
+        if self.encryption_key:
+            self.fernet = Fernet(self.encryption_key)
+            self.encrypt = lambda data: self.fernet.encrypt(data)
+            self.decrypt = lambda encrypted_data: self.fernet.decrypt(encrypted_data)
 
     @classmethod
     def __parent_path(cls, path: str) -> str:
@@ -233,24 +245,26 @@ class MongoOperations(fuse.Operations):
         file_doc = self.col.find_one({"path": path})
         if file_doc is None:
             raise fuse.FuseOSError(errno.EIO)
-        # TODO: decrypt content
-        file_io = io.BytesIO(file_doc["content"])
+        content = self.decrypt(file_doc["content"])
+        file_io = io.BytesIO(content)
         file_io.seek(offset)
         return file_io.read(length)
 
     def write(self, path, buf, offset=0, fh=None):
         self.__logger.debug(f"write {path}")
-        now = datetime.datetime.utcnow()
         file_doc = self.col.find_one({"path": path})
         if file_doc is None:
             raise fuse.FuseOSError(errno.EIO)
-        # TODO: decrypt content
-        file_io = io.BytesIO(file_doc["content"])
+        raw_content = file_doc["content"]
+        if len(raw_content) > 0:
+            content = self.decrypt(raw_content)
+        else:
+            content = raw_content
+        file_io = io.BytesIO(content)
         file_io.seek(offset)
         file_io.write(buf)
         file_io.seek(0)
-        # TODO: encrypt content
-        updated_content = file_io.read()
+        updated_content = self.encrypt(file_io.read())
         res = self.col.update_one(filter={"path": path},
                                   update={"$set": {"content": updated_content, "size": len(buf),
                                                    "last_updated_at": self.__now()}})
