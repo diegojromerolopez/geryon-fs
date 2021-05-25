@@ -27,16 +27,28 @@ host =
 
 You can also set the file in other path as long as you pass the path in the config variable to the mount python binary.
 
-### Command to mount the Mongo file system
+The easiest way to create an empty configuration file is by calling the create_empty_config script: 
 
 ```bash
-python geryon-fs/bin/mount.py --mountpoint /home/USER/tmp/mongofs --config /home/USER/.geryonfs.ini
+python geryon-fuse/bin/create_empty_config.py --config /home/USER/my_drives/.geryonfs.ini
 ```
 
-If your config file is in **/home/USER/.geryonfs.ini** you can omit the config parameter:
+If you want your config file to be in **/home/USER/.geryonfuse.ini** (recommended) you can omit the config parameter:
 
 ```bash
-python geryon-fs/bin/mount.py --mountpoint /home/USER/tmp/mongofs
+python geryon-fuse/bin/create_empty_config.py
+```
+
+### Mount a Mongo file system
+
+```bash
+python geryon-fuse/bin/mount_mongofs.py --mountpoint /home/USER/tmp/mongofs --config /home/USER/.geryonfs.ini
+```
+
+If your config file is in **/home/USER/.geryonfuse.ini** you can omit the config parameter:
+
+```bash
+python geryon-fuse/bin/mount_mongofs.py --mountpoint /home/USER/tmp/mongofs
 ```
 
 ## Tests

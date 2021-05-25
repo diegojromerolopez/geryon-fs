@@ -13,11 +13,11 @@ import time
 from typing import Dict, Any
 
 
-READDIR_RESULT_ITEM = collections.namedtuple('READDIR_RESULT_ITEM', ['filename', 'attrs', 'offset'])
+READDIR_RESULT_ITEM = collections.namedtuple("READDIR_RESULT_ITEM", ["filename", "attrs", "offset"])
 
 
 class MongoOperations(fuse.Operations):
-    CONFIG_SECTION = 'mongofs'
+    CONFIG_SECTION = "mongofs"
     DEFAULT_COLLECTION_NAME = "mongofs-drive"
 
     NOT_IMPLEMENT_EXIT_CODE = 0
@@ -34,7 +34,7 @@ class MongoOperations(fuse.Operations):
             cls.__logger.setLevel(level=logging.DEBUG)
             logger_console_handler = logging.StreamHandler()
             logger_console_handler.setLevel(logging.DEBUG)
-            logger_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            logger_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
             logger_console_handler.setFormatter(logger_formatter)
             cls.__logger.addHandler(logger_console_handler)
 
@@ -43,11 +43,11 @@ class MongoOperations(fuse.Operations):
         return super(MongoOperations, cls).__new__(cls)
 
     def __init__(self, config: configparser.ConfigParser) -> None:
-        self.username = config.get(section=self.CONFIG_SECTION, option='username')
-        self.password = config.get(section=self.CONFIG_SECTION, option='password')
-        self.host = config.get(section=self.CONFIG_SECTION, option='host')
-        self.database = config.get(section=self.CONFIG_SECTION, option='database')
-        self.collection_name = config.get(section=self.CONFIG_SECTION, option='collection')
+        self.username = config.get(section=self.CONFIG_SECTION, option="username")
+        self.password = config.get(section=self.CONFIG_SECTION, option="password")
+        self.host = config.get(section=self.CONFIG_SECTION, option="host")
+        self.database = config.get(section=self.CONFIG_SECTION, option="database")
+        self.collection_name = config.get(section=self.CONFIG_SECTION, option="collection")
         self.connection_string = \
             f"mongodb+srv://{self.username}:{self.password}@{self.host}/{self.database}?retryWrites=true&w=majority"
         self.client = pymongo.MongoClient(self.connection_string)
@@ -192,11 +192,11 @@ class MongoOperations(fuse.Operations):
         total_data_blocks_in_fs = 200_000
         free_blocks_in_fs = 200_000
         return {
-            'f_bsize': transfer_block_size,
-            'f_blocks': total_data_blocks_in_fs,
-            'f_frsize': fragment_size,
-            'f_bfree': free_blocks_in_fs,
-            'f_bavail': free_blocks_in_fs
+            "f_bsize": transfer_block_size,
+            "f_blocks": total_data_blocks_in_fs,
+            "f_frsize": fragment_size,
+            "f_bfree": free_blocks_in_fs,
+            "f_bavail": free_blocks_in_fs
         }
 
     def unlink(self, path):
