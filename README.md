@@ -64,7 +64,7 @@ python geryon-fuse/bin/mount_mongofs.py --mountpoint /home/USER/tmp/mongofs
 
 
 ## License
-[LICENSE](LICENSE).
+[BSD 2-clause license](LICENSE).
 
 
 ## TODOs
