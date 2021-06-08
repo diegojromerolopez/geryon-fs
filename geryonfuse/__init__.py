@@ -1,1 +1,1 @@
-from mongofs.mongooperations import MongoOperations  # noqa
+from geryonfuse.mongofs.mongooperations import MongoOperations  # noqa
