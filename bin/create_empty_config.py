@@ -20,5 +20,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     root_dir_path = os.path.dirname(os.path.abspath(__file__))
-    source_config_file_path = os.path.join(root_dir_path, "..",  "resources", ".geryonfuse.ini")
+    source_config_file_path = os.path.join(root_dir_path, "..",  "resources", "geryonfuse.ini")
     shutil.copyfile(src=source_config_file_path, dst=config_path)

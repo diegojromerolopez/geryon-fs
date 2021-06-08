@@ -3,13 +3,10 @@ from setuptools import setup
 
 root_dir_path = os.path.dirname(os.path.abspath(__file__))
 
-try:
-    import pypandoc
-    long_description = pypandoc.convert("README.md", "rst")
-except(IOError, ImportError):
-    long_description = open(os.path.join(root_dir_path, "README.md")).read()
+long_description = open(os.path.join(root_dir_path, "README.md")).read()
 
-with open(os.path.join(root_dir_path, "requirements.txt")) as requirements_file:
+requirements_path = os.path.join(root_dir_path, "requirements.txt")
+with open(requirements_path) as requirements_file:
     requirements = requirements_file.readlines()
 
 setup(
@@ -19,8 +16,12 @@ setup(
     author_email="diegojromerolopez@gmail.com",
     description=" fuse-based driver for Mongo databases written in Python.",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     classifiers=[
-        "Programming Language :: Python :: 3.9"
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: BSD License"
     ],

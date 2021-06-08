@@ -11,6 +11,7 @@ import stat
 import time
 from typing import Dict, Any
 from logger.geryon_logger import build_logger
+from mongofs.mongo_connector import MongoConnector
 
 READDIR_RESULT_ITEM = collections.namedtuple("READDIR_RESULT_ITEM", ["filename", "attrs", "offset"])
 
@@ -29,23 +30,10 @@ class MongoOperations(fuse.Operations):
         return super(MongoOperations, cls).__new__(cls)
 
     def __init__(self, config: configparser.ConfigParser) -> None:
-        self.username = config.get(section=self.CONFIG_SECTION, option="username")
-        self.password = config.get(section=self.CONFIG_SECTION, option="password")
-        self.host = config.get(section=self.CONFIG_SECTION, option="host")
-        self.database = config.get(section=self.CONFIG_SECTION, option="database")
-        self.collection_name = config.get(section=self.CONFIG_SECTION, option="collection")
-        self.connection_string = \
-            f"mongodb+srv://{self.username}:{self.password}@{self.host}/{self.database}?retryWrites=true&w=majority"
-        self.client = pymongo.MongoClient(self.connection_string)
-        self.db = self.client[self.database]
-        self.col = self.db[self.collection_name]
+        mongo_connector = MongoConnector(config=config)
+        self.col = mongo_connector.connect()
         if not self.col.find_one({"path": "/"}):
             self.create_root()
-        self.col.create_index([("path", pymongo.ASCENDING)], unique=True)
-        self.col.create_index([("path", pymongo.ASCENDING), ("created_at", pymongo.ASCENDING)])
-        self.col.create_index([("path", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
-        self.col.create_index([("path", pymongo.ASCENDING), ("last_updated_at", pymongo.ASCENDING)])
-        self.col.create_index([("path", pymongo.ASCENDING), ("last_updated_at", pymongo.DESCENDING)])
 
     @classmethod
     def __parent_path(cls, path: str) -> str:
