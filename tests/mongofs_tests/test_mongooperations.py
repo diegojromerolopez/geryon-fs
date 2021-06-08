@@ -2,7 +2,7 @@ import configparser
 import os
 import unittest
 import fuse
-from mongofs.mongooperations import MongoOperations
+from geryonfuse import MongoOperations
 
 
 class TestMongoOperations(unittest.TestCase):

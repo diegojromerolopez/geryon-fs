@@ -30,7 +30,7 @@ setup(
     keywords="database mongo fuse driver",
     url="https://github.com/diegojromerolopez/geryon-fuse",
     packages=["mongofs", "logger"],
-    package_dir={"mongofs": "src/mongofs", "logger": "src/logger"},
+    package_dir={"mongofs": "geryonfuse/mongofs", "logger": "geryonfuse/logger"},
     data_files=[("resources", ["resources/.geryonfuse.ini"])],
     include_package_data=True,
     scripts=[

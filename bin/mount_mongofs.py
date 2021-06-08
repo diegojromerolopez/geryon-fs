@@ -3,7 +3,7 @@ import configparser
 import os
 import sys
 from fuse import FUSE
-from mongofs.mongooperations import MongoOperations
+from geryonfuse import MongoOperations
 
 
 if __name__ == "__main__":
