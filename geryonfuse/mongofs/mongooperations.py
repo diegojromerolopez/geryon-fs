@@ -10,8 +10,8 @@ import re
 import stat
 import time
 from typing import Dict, Any
-from logger.geryon_logger import build_logger
-from mongofs.mongo_connector import MongoConnector
+from geryonfuse.logger.geryon_logger import build_logger
+from geryonfuse.mongofs.mongo_connector import MongoConnector
 
 READDIR_RESULT_ITEM = collections.namedtuple("READDIR_RESULT_ITEM", ["filename", "attrs", "offset"])
 
