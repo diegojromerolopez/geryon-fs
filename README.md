@@ -1,5 +1,11 @@
 # Geryon-fuse
 
+[![License](https://img.shields.io/badge/License-BSD-blue.svg)](https://opensource.org/licenses/BSD)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ca3b1b760bd7d47c6cef/maintainability)](https://codeclimate.com/github/diegojromerolopez/geryon-fuse/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ca3b1b760bd7d47c6cef/test_coverage)](https://codeclimate.com/github/diegojromerolopez/geryon-fuse/test_coverage)
+
 **WARNING: this project is a prototype, don't use it for actual and important files.
 I DECLINE ALL RESPONSIBILITY OF LOST DATA OR OTHER CATASTROPHE YOU SUFFER WHEN USING THIS CODE**
 
