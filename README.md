@@ -30,6 +30,7 @@ format = %(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 
 [mongofs]
+backend = mongo_server
 username =
 password =
 database =
@@ -38,6 +39,17 @@ host =
 ```
 
 The logger section is not mandatory.
+
+There are two mongo backends:
+- mongo_server (usual connection to mongo server by connection string): that requires all the following parameters:
+    - username
+    - password
+    - host
+    - database
+    - collection
+- memory_instance (a [MontyDB](https://github.com/davidlatwe/montydb) memory instance) that requires all the following parameters:
+    - database
+    - collection
 
 You can also set the file in other path as long as you pass the path in the config variable to the mount python binary.
 
@@ -66,7 +78,7 @@ python geryon-fuse/bin/mount_mongofs.py --mountpoint /home/USER/tmp/mongofs
 ```
 
 ## Tests
-TODO.
+Tests are implemented to run on a MontyDB memory instance database.
 
 
 ## License
@@ -78,8 +90,6 @@ TODO.
 - [x] Create config format and allow credentials from there.
 - [ ] Include some encryption.
 - [ ] Include some content checksum.
-- [ ] Make docker image with tests.
-- [ ] IC in some server that offers free minutes.
 - [ ] Measure performance. 
 
 
